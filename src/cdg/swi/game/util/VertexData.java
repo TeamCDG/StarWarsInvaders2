@@ -93,6 +93,10 @@ public class VertexData {
 		this.xyzw = xyzw;
 	}
 	
+	public VertexData() {
+		// TODO Auto-generated constructor stub
+	}
+
 	// Sets XYZ
 	public void setXYZ(float x, float y, float z) {
 		this.setXYZW(x, y, z, 1f);
