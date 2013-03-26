@@ -110,6 +110,8 @@ public abstract class MenuFrame {
 		GL11.glReadPixels(Mouse.getX(), Mouse.getY(), 1, 1, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixel);
 		int gotId = cdg.swi.game.util.Utility.glColorToId(new byte[]{pixel.get(0),pixel.get(1),pixel.get(2),pixel.get(3)}, false);
 		
+		//System.out.println("Got id: "+gotId); // TODO: remove debug;
+		
 		if(gotId != this.lastSelectedId)
 		{
 			Component c = this.getComponentById(lastSelectedId);
@@ -120,8 +122,6 @@ public abstract class MenuFrame {
 					l.unselected();
 			}
 		}
-		
-		System.out.println("got id: "+gotId);
 		
 		if(Mouse.isButtonDown(0))
 		{
