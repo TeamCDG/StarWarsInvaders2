@@ -41,13 +41,11 @@ public class Button extends Component {
 
 			@Override
 			public void selected(int sx, int sy) {
-				System.out.println("selected...");
 				onSelected(sx,sy);
 			}
 
 			@Override
 			public void unselected() {
-				System.out.println("unselected...");
 				onUnselected();
 			}
 		});
