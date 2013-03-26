@@ -10,5 +10,8 @@ public class MainMenu extends MenuFrame
 		
 		Button b2 = new Button(0.0f, 0.0f);
 		this.add(b2);
+		
+		Label l = new Label(-1.0f,1.0f,"E");
+		this.add(l);
 	}
 }
