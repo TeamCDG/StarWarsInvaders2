@@ -29,13 +29,13 @@ public abstract class Component {
 	protected float width;
 	protected float height;
 	
-	private int selectionVAO;
-	private int selectionVBO;
-	private int selectionIndiciesVBO;
+	private int selectionVAO = -1;
+	private int selectionVBO = -1;
+	private int selectionIndiciesVBO = -1;
 	
-	protected int drawVAO;
-	protected int drawVBO;
-	protected int drawIndiciesVBO;
+	protected int drawVAO = -1;
+	protected int drawVBO = -1;
+	protected int drawIndiciesVBO = -1;
 	
 	private IClickListener clickListener = null;
 	private ISelectListener selectListener = null;
@@ -45,6 +45,21 @@ public abstract class Component {
 		this.x = x;
 		this.y = y;
 		
+	}
+	
+	public int getSelectionVAO()
+	{
+		return this.selectionVAO;
+	}
+	
+	public int getSelectionVBO()
+	{
+		return this.selectionVBO;
+	}
+	
+	public int getSelectionIndiciesVBO()
+	{
+		return this.selectionIndiciesVBO;
 	}
 	
 	public int getId()
