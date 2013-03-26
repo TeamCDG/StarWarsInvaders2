@@ -9,6 +9,7 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
@@ -36,7 +37,10 @@ public class Main {
 		this.initWindow();
 		this.initGL();
 		this.loadMenuSelectionShader();
-		setupQuad();
+		this.loadMenuRenderShader();
+		
+		StaticManager.FONT_TEXTURE_ID = Utility.loadPNGTexture("res//font//font.png", GL13.GL_TEXTURE0);
+		//setupQuad();
 		m = new MainMenu();
 		
 		while (!Display.isCloseRequested()) {
@@ -53,7 +57,7 @@ public class Main {
 	private void process()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		m.doSelection(true,false);
+		m.doSelection(true,true);
 		m.draw();
 		
 		GL20.glUseProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
@@ -74,7 +78,7 @@ public class Main {
 				.withProfileCore(true);
 			
 			Display.setDisplayMode(new DisplayMode(StaticManager.WINDOW_WIDTH, StaticManager.WINDOW_HEIGHT));
-			Display.setTitle("v0.0.1a - picking test");
+			Display.setTitle("v0.0.1b - font test");
 			Display.create(pixelFormat, contextAtrributes);
 			
 			
@@ -142,6 +146,28 @@ public class Main {
 		GL20.glBindAttribLocation(StaticManager.SELECTION_SHADER_PROGRAM_ID, 2, "in_TextureCoord");
 		
 		GL20.glValidateProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
+	}
+	
+	private void loadMenuRenderShader()
+	{
+		//load vertex shader
+		int vsId = Utility.loadShader("res\\shader\\menuRenderVertex.glsl", GL20.GL_VERTEX_SHADER);
+		//load fragment shader
+		int fsId = Utility.loadShader("res\\shader\\menuRenderFragment.glsl", GL20.GL_FRAGMENT_SHADER);
+		
+		StaticManager.MENU_SHADER_PROGRAM_ID = GL20.glCreateProgram();
+		GL20.glAttachShader(StaticManager.MENU_SHADER_PROGRAM_ID , vsId);
+		GL20.glAttachShader(StaticManager.MENU_SHADER_PROGRAM_ID , fsId);
+		GL20.glLinkProgram(StaticManager.MENU_SHADER_PROGRAM_ID );
+
+		// Position information will be attribute 0
+		GL20.glBindAttribLocation(StaticManager.MENU_SHADER_PROGRAM_ID , 0, "in_Position");
+		// Color information will be attribute 1
+		GL20.glBindAttribLocation(StaticManager.MENU_SHADER_PROGRAM_ID , 1, "in_Color");
+		// Textute information will be attribute 2
+		GL20.glBindAttribLocation(StaticManager.MENU_SHADER_PROGRAM_ID , 2, "in_TextureCoord");
+		
+		GL20.glValidateProgram(StaticManager.MENU_SHADER_PROGRAM_ID );
 	}
 	
 	private void exitOnGLError(String errorMessage) 
