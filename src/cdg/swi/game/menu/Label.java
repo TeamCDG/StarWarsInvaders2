@@ -31,7 +31,7 @@ public class Label extends Component {
 	{
 		super(x, y);
 		this.text = text;
-		this.width = FontFinals.getWidth('A');
+		this.width = FontFinals.getWidth('E');
 		this.height = FontFinals.getHeight('A');
 		this.setupGL2();
 	}
@@ -45,18 +45,45 @@ public class Label extends Component {
 		glBindVertexArray(this.drawVAO); //bind our VAO
 		glBindBuffer(GL_ARRAY_BUFFER, this.drawVBO); //bind our VBO
 		
+		float xOff1 = FontFinals.getWidth('E');
+		float xOff2 = xOff1 + FontFinals.getWidth('V');
+		float xOff3 = xOff2 + FontFinals.getWidth('A');
 		
 		points = new VertexData[]{new VertexData(new float[]{this.x,this.y,0.0f,1.0f}, 
-				new float[]{0.51484375f,0.74921875f,1.0f,1.0f},
-				new float[]{FontFinals.getX('A'),FontFinals.getY('A')}),
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('E'),FontFinals.getY('E')}),
 		   new VertexData(new float[]{this.x,this.y-this.height,0.0f,1.0f}, 
-				new float[]{0.51484375f,0.74921875f,1.0f,1.0f},
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('E'),FontFinals.getY('E')+FontFinals.getHeight('E')}),
+		   new VertexData(new float[]{this.x+xOff1,this.y-this.height,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('E')+FontFinals.getWidth('E'),FontFinals.getY('E')+FontFinals.getHeight('E')}),
+		   new VertexData(new float[]{this.x+xOff1,this.y,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('E')+FontFinals.getWidth('E'),FontFinals.getY('E')}),
+		   new VertexData(new float[]{this.x+xOff1,this.y,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('V'),FontFinals.getY('V')}),
+		   new VertexData(new float[]{this.x+xOff1,this.y-this.height,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('V'),FontFinals.getY('V')+FontFinals.getHeight('V')}),
+		   new VertexData(new float[]{this.x+xOff2,this.y-this.height,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('V')+FontFinals.getWidth('V'),FontFinals.getY('V')+FontFinals.getHeight('V')}),
+		   new VertexData(new float[]{this.x+xOff2,this.y,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('V')+FontFinals.getWidth('V'),FontFinals.getY('V')}),
+		   new VertexData(new float[]{this.x+xOff2,this.y,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
+				new float[]{FontFinals.getX('A'),FontFinals.getY('A')}),
+		   new VertexData(new float[]{this.x+xOff2,this.y-this.height,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
 				new float[]{FontFinals.getX('A'),FontFinals.getY('A')+FontFinals.getHeight('A')}),
-		   new VertexData(new float[]{this.x+this.width,this.y-this.height,0.0f,1.0f}, 
-				new float[]{0.17578125f,0.00390625f,0.984375f,1.0f},
+		   new VertexData(new float[]{this.x+xOff3,this.y-this.height,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
 				new float[]{FontFinals.getX('A')+FontFinals.getWidth('A'),FontFinals.getY('A')+FontFinals.getHeight('A')}),
-		   new VertexData(new float[]{this.x+this.width,this.y,0.0f,1.0f}, 
-				new float[]{0.17578125f,0.00390625f,0.984375f,1.0f},
+		   new VertexData(new float[]{this.x+xOff3,this.y,0.0f,1.0f}, 
+				new float[]{1.0f,1.0f,1.0f,1.0f},
 				new float[]{FontFinals.getX('A')+FontFinals.getWidth('A'),FontFinals.getY('A')})};
 		
 		//buffer to store data
@@ -87,8 +114,8 @@ public class Label extends Component {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		
 		//buffer for storing indicies
-		ByteBuffer indiciesBuffer = BufferUtils.createByteBuffer(6);
-		indiciesBuffer.put(new byte[]{0, 1, 2, 2, 3, 0}); //put in indicies
+		ByteBuffer indiciesBuffer = BufferUtils.createByteBuffer(18);
+		indiciesBuffer.put(new byte[]{0, 1, 2, 2, 3, 0, 4, 5, 6, 6, 7, 4, 8, 9, 10, 10, 11, 8}); //put in indicies
 		indiciesBuffer.flip();
 		
 		this.drawIndiciesVBO = GL15.glGenBuffers(); //generate buffer id for indicies
@@ -215,10 +242,11 @@ public class Label extends Component {
 	public void drawUI() 
 	{
 		
-		//System.out.println("Label: "+
-		//				   this.width+"/"+this.height+
-		//				   " SID: "+StaticManager.MENU_SHADER_PROGRAM_ID+
-		//				   " FTID: "+StaticManager.FONT_TEXTURE_ID);
+		System.out.println("Label: "+
+						   this.width+"/"+this.height+
+						   " SID: "+StaticManager.MENU_SHADER_PROGRAM_ID+
+						   " FTID: "+StaticManager.FONT_TEXTURE_ID+
+						   " FTUID: "+StaticManager.FONT_TEXTURE_UNIFORM_ID);
 		
 		
 		//GL20.glUseProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
@@ -248,10 +276,16 @@ public class Label extends Component {
 		GL20.glUseProgram(0);
 		*/
 		
-		
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		
 		GL20.glUseProgram(StaticManager.MENU_SHADER_PROGRAM_ID);
 		GL30.glBindVertexArray(this.drawVAO);
+		
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, StaticManager.FONT_TEXTURE_ID);
+		GL20.glUniform1i(StaticManager.FONT_TEXTURE_UNIFORM_ID, 0);
+		
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);
@@ -259,11 +293,9 @@ public class Label extends Component {
 		// Bind to the index VBO that has all the information about the order of the vertices
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.drawIndiciesVBO);
 		
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, StaticManager.FONT_TEXTURE_ID);
 		
 		// Draw the vertices
-		GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_BYTE, 0);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, 18, GL11.GL_UNSIGNED_BYTE, 0);
 		
 		// Put everything back to default (deselect)
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);

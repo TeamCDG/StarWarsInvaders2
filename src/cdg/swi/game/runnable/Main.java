@@ -159,6 +159,7 @@ public class Main {
 		GL20.glAttachShader(StaticManager.MENU_SHADER_PROGRAM_ID , vsId);
 		GL20.glAttachShader(StaticManager.MENU_SHADER_PROGRAM_ID , fsId);
 		GL20.glLinkProgram(StaticManager.MENU_SHADER_PROGRAM_ID );
+		
 
 		// Position information will be attribute 0
 		GL20.glBindAttribLocation(StaticManager.MENU_SHADER_PROGRAM_ID , 0, "in_Position");
@@ -168,6 +169,8 @@ public class Main {
 		GL20.glBindAttribLocation(StaticManager.MENU_SHADER_PROGRAM_ID , 2, "in_TextureCoord");
 		
 		GL20.glValidateProgram(StaticManager.MENU_SHADER_PROGRAM_ID );
+		
+		StaticManager.FONT_TEXTURE_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.MENU_SHADER_PROGRAM_ID, "texture_font");
 	}
 	
 	private void exitOnGLError(String errorMessage) 
