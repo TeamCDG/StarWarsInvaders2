@@ -182,6 +182,31 @@ public abstract class FontFinals
 	public static final float D9_WIDTH = 0.0625f;
 	public static final float D9_HEIGHT = 0.072265625f;
 	
+	public static final float SPACE_X = 0.8984375f;
+	public static final float SPACE_Y = 0.2255859375f;
+	public static final float SPACE_WIDTH = 0.0625f;
+	public static final float SPACE_HEIGHT = 0.072265625f;
+	
+	public static final float EXCLAMATION_X = 0.001953125f;
+	public static final float EXCLAMATION_Y = 0.72265625f;
+	public static final float EXCLAMATION_WIDTH = 0.0146484375f;
+	public static final float EXCLAMATION_HEIGHT = 0.072265625f;
+	
+	public static final float QUESTION_X = 0.1015625f;
+	public static final float QUESTION_Y = 0.72265625f;
+	public static final float QUESTION_WIDTH = 0.0517578125f;
+	public static final float QUESTION_HEIGHT = 0.072265625f;
+	
+	public static final float DOT_X = 0.2001953125f;
+	public static final float DOT_Y = 0.72265625f;
+	public static final float DOT_WIDTH = 0.015625f;
+	public static final float DOT_HEIGHT = 0.072265625f;
+	
+	public static final float DOUBLE_DOT_X = 0.1005859375f;
+	public static final float DOUBLE_DOT_Y = 0.8203125f;
+	public static final float DOUBLE_DOT_WIDTH = 0.015625f;
+	public static final float DOUBLE_DOT_HEIGHT = 0.072265625f;
+	
 	public static float getX(char c)
 	{
 		switch(c)
@@ -258,6 +283,16 @@ public abstract class FontFinals
 				return D8_X;
 			case '9':
 				return D9_X;
+			case ' ':
+				return SPACE_X;
+			case '!':
+				return EXCLAMATION_X;
+			case '?':
+				return QUESTION_X;
+			case '.':
+				return DOT_X;
+			case ':':
+				return DOUBLE_DOT_X;
 		}
 		
 		return 0.0f;
@@ -339,6 +374,16 @@ public abstract class FontFinals
 				return D8_Y;
 			case '9':
 				return D9_Y;
+			case ' ':
+				return SPACE_Y;
+			case '!':
+				return EXCLAMATION_Y;
+			case '?':
+				return QUESTION_Y;
+			case '.':
+				return DOT_Y;
+			case ':':
+				return DOUBLE_DOT_Y;
 		}
 		
 		return 0.0f;
@@ -420,6 +465,16 @@ public abstract class FontFinals
 				return D8_WIDTH;
 			case '9':
 				return D9_WIDTH;
+			case ' ':
+				return SPACE_WIDTH;
+			case '!':
+				return EXCLAMATION_WIDTH;
+			case '?':
+				return QUESTION_WIDTH;
+			case '.':
+				return DOT_WIDTH;
+			case ':':
+				return DOUBLE_DOT_WIDTH;
 		}
 		
 		return 0.0f;
@@ -501,6 +556,16 @@ public abstract class FontFinals
 				return D8_HEIGHT;
 			case '9':
 				return D9_HEIGHT;
+			case ' ':
+				return SPACE_HEIGHT;
+			case '!':
+				return EXCLAMATION_HEIGHT;
+			case '?':
+				return QUESTION_HEIGHT;
+			case '.':
+				return DOT_HEIGHT;
+			case ':':
+				return DOUBLE_DOT_HEIGHT;
 		}
 		
 		return 0.0f;
