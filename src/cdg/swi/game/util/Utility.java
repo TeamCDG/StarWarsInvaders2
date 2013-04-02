@@ -151,4 +151,14 @@ public abstract class Utility
 		
 		return texId;
 	}
+	
+	public static void printFloatArray(float[] f)
+	{
+		for(int i = 0; i < f.length; i++)
+		{
+			System.out.print(f[i]+"; ");
+		}
+		System.out.print("\n");
+		System.out.flush();
+	}
 }
