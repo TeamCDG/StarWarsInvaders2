@@ -74,10 +74,10 @@ public abstract class MenuFrame {
 	
 	public void draw()
 	{
+		this.doSelection(true,true);
 		for(int i = 0; i < this.components.size(); i++)
 		{
 			this.components.get(i).drawUI();
-			//System.out.println("Drawing: #"+i);
 		}
 	}
 	
@@ -117,9 +117,11 @@ public abstract class MenuFrame {
 			Component c = this.getComponentById(lastSelectedId);
 			if(c != null)
 			{
-				ISelectListener l = c.getSelectListener();
-				if(l != null)
-					l.unselected();
+				List<ISelectListener> l = c.getSelectListener();
+				for(int i = 0; i < l.size(); i++)
+				{
+					l.get(i).unselected();
+				}
 			}
 		}
 		
@@ -128,9 +130,11 @@ public abstract class MenuFrame {
 			Component c = this.getComponentById(gotId);
 			if(c != null)
 			{
-				IClickListener l = this.getComponentById(gotId).getClickListener();
-				if(l != null)
-					l.clicked(Mouse.getX(),Mouse.getY(),0);
+				List<IClickListener> l = this.getComponentById(gotId).getClickListener();
+				for(int i = 0; i < l.size(); i++)
+				{
+					l.get(i).clicked(Mouse.getX(),Mouse.getY(),0);
+				}
 			}
 		}
 		else
@@ -138,12 +142,12 @@ public abstract class MenuFrame {
 			Component c = this.getComponentById(gotId);
 			if(c != null)
 			{
-				ISelectListener l = c.getSelectListener();
-				if(l != null)
+				List<ISelectListener> l = c.getSelectListener();
+				for(int i = 0; i < l.size(); i++)
 				{
-					l.selected(Mouse.getX(),Mouse.getY());
-					this.lastSelectedId = gotId;
+					l.get(i).selected(Mouse.getX(),Mouse.getY());
 				}
+				this.lastSelectedId = gotId;
 			}
 		}
 		
