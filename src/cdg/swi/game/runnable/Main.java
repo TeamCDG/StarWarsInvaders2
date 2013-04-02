@@ -3,6 +3,7 @@ package cdg.swi.game.runnable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Calendar;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.ContextAttribs;
@@ -24,6 +25,7 @@ public class Main {
 	private MainMenu m;
 	private cdg.swi.game.test.SimpleDrawable d;
 	private cdg.swi.game.test.SimpleDrawable d2;
+	private Calendar c;
 	/**
 	 * @param args
 	 */
@@ -38,12 +40,17 @@ public class Main {
 		this.initGL();
 		this.loadMenuSelectionShader();
 		this.loadMenuRenderShader();
+		this.loadTextShader();
 		
 		StaticManager.FONT_TEXTURE_ID = Utility.loadPNGTexture("res//font//font.png", GL13.GL_TEXTURE0);
 		//setupQuad();
 		m = new MainMenu();
-		
+		c = Calendar.getInstance();
 		while (!Display.isCloseRequested()) {
+			long lastFrameTime = Calendar.getInstance().getTimeInMillis()-c.getTimeInMillis();
+			c = Calendar.getInstance();
+			
+			m.setLabelText("Frametime: "+lastFrameTime+"ms"+"\nFps: "+Math.round((double)1000/(double)lastFrameTime));
 			// Do a single loop (logic/render)
 			this.process();
 			
@@ -57,7 +64,6 @@ public class Main {
 	private void process()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		m.doSelection(true,true);
 		m.draw();
 		
 		GL20.glUseProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
@@ -78,7 +84,7 @@ public class Main {
 				.withProfileCore(true);
 			
 			Display.setDisplayMode(new DisplayMode(StaticManager.WINDOW_WIDTH, StaticManager.WINDOW_HEIGHT));
-			Display.setTitle("v0.0.1b - font test");
+			Display.setTitle("v0.0.1c - font shader test");
 			Display.create(pixelFormat, contextAtrributes);
 			
 			
@@ -170,7 +176,33 @@ public class Main {
 		
 		GL20.glValidateProgram(StaticManager.MENU_SHADER_PROGRAM_ID );
 		
-		StaticManager.FONT_TEXTURE_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.MENU_SHADER_PROGRAM_ID, "texture_font");
+	}
+	
+	private void loadTextShader()
+	{
+		//load vertex shader
+		int vsId = Utility.loadShader("res\\shader\\textVertex.glsl", GL20.GL_VERTEX_SHADER);
+		//load fragment shader
+		int fsId = Utility.loadShader("res\\shader\\textFragment.glsl", GL20.GL_FRAGMENT_SHADER);
+		
+		StaticManager.TEXT_SHADER_PROGRAM_ID = GL20.glCreateProgram();
+		GL20.glAttachShader(StaticManager.TEXT_SHADER_PROGRAM_ID , vsId);
+		GL20.glAttachShader(StaticManager.TEXT_SHADER_PROGRAM_ID , fsId);
+		GL20.glLinkProgram(StaticManager.TEXT_SHADER_PROGRAM_ID );
+		
+
+		// Position information will be attribute 0
+		GL20.glBindAttribLocation(StaticManager.TEXT_SHADER_PROGRAM_ID , 0, "in_Position");
+		// Color information will be attribute 1
+		GL20.glBindAttribLocation(StaticManager.TEXT_SHADER_PROGRAM_ID , 1, "in_Color");
+		// Textute information will be attribute 2
+		GL20.glBindAttribLocation(StaticManager.TEXT_SHADER_PROGRAM_ID , 2, "in_TextureCoord");
+		
+		GL20.glValidateProgram(StaticManager.TEXT_SHADER_PROGRAM_ID );
+		
+		StaticManager.FONT_TEXTURE_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "texture_font");
+		StaticManager.FONT_SCALING_MATRIX_UNIFORM_ID= GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "font_scaling_matrix");
+		StaticManager.TEXT_POSITION_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "position");
 	}
 	
 	private void exitOnGLError(String errorMessage) 
