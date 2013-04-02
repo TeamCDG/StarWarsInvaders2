@@ -32,11 +32,12 @@ public class Button extends Component {
 	public Button(float x, float y) {
 		super(x, y);
 		this.width = 0.5f;
-		this.height = 0.2f;
-		
+		this.height = 0.15f;		
+		this.setTextOffset(0.15f, 0.06f);
+		this.setText("Button");
 		setupGL();
 		
-		this.setSelectListener(new ISelectListener()
+		this.addSelectListener(new ISelectListener()
 		{
 
 			@Override
@@ -49,6 +50,11 @@ public class Button extends Component {
 				onUnselected();
 			}
 		});
+	}
+	
+	public void setAlpha(float alpha)
+	{
+		
 	}
 	
 	public void onSelected(int xy, int sy)
@@ -79,6 +85,8 @@ public class Button extends Component {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); //unbind buffer
 		
 		GL30.glBindVertexArray(0); //unbind VAO
+		
+		this.setTextColor(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 	
 	public void onUnselected()
@@ -109,6 +117,8 @@ public class Button extends Component {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); //unbind buffer
 		
 		GL30.glBindVertexArray(0); //unbind VAO
+		
+		this.setTextColor(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 	
 	private void setupGL()
@@ -194,6 +204,8 @@ public class Button extends Component {
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 		GL20.glUseProgram(0);
+		
+		this.drawGLText();
 
 	}
 
