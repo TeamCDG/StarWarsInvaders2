@@ -184,7 +184,7 @@ public abstract class FontFinals
 	
 	public static final float SPACE_X = 0.8984375f;
 	public static final float SPACE_Y = 0.2255859375f;
-	public static final float SPACE_WIDTH = 0.0625f;
+	public static final float SPACE_WIDTH = 0.0556640625f;
 	public static final float SPACE_HEIGHT = 0.072265625f;
 	
 	public static final float EXCLAMATION_X = 0.001953125f;
@@ -206,6 +206,21 @@ public abstract class FontFinals
 	public static final float DOUBLE_DOT_Y = 0.8203125f;
 	public static final float DOUBLE_DOT_WIDTH = 0.015625f;
 	public static final float DOUBLE_DOT_HEIGHT = 0.072265625f;
+	
+	public static final float SHARP_X = 0.001953125f;
+	public static final float SHARP_Y = 0.8203125f;
+	public static final float SHARP_WIDTH = 0.0556640625f;
+	public static final float SHARP_HEIGHT = 0.072265625f;
+	
+	public static final float COMMA_X = 0.201171875f;
+	public static final float COMMA_Y = 0.8203125f;
+	public static final float COMMA_WIDTH = 0.015625f;
+	public static final float COMMA_HEIGHT = 0.072265625f;
+	
+	public static final float AND_X = 0.69921875f;
+	public static final float AND_Y = 0.9152734375f;
+	public static final float AND_WIDTH = 0.05078125f;
+	public static final float AND_HEIGHT = 0.072265625f;
 	
 	public static float getX(char c)
 	{
@@ -293,6 +308,12 @@ public abstract class FontFinals
 				return DOT_X;
 			case ':':
 				return DOUBLE_DOT_X;
+			case '#':
+				return SHARP_X;
+			case ',':
+				return COMMA_X;
+			case '&':
+				return AND_X;
 		}
 		
 		return 0.0f;
@@ -384,6 +405,12 @@ public abstract class FontFinals
 				return DOT_Y;
 			case ':':
 				return DOUBLE_DOT_Y;
+			case '#':
+				return SHARP_Y;
+			case ',':
+				return COMMA_Y;
+			case '&':
+				return AND_Y;
 		}
 		
 		return 0.0f;
@@ -475,6 +502,12 @@ public abstract class FontFinals
 				return DOT_WIDTH;
 			case ':':
 				return DOUBLE_DOT_WIDTH;
+			case '#':
+				return SHARP_WIDTH;
+			case ',':
+				return COMMA_WIDTH;
+			case '&':
+				return AND_WIDTH;
 		}
 		
 		return 0.0f;
@@ -566,6 +599,12 @@ public abstract class FontFinals
 				return DOT_HEIGHT;
 			case ':':
 				return DOUBLE_DOT_HEIGHT;
+			case '#':
+				return SHARP_HEIGHT;
+			case ',':
+				return COMMA_HEIGHT;
+			case '&':
+				return AND_HEIGHT;
 		}
 		
 		return 0.0f;
