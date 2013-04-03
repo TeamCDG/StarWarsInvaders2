@@ -12,5 +12,6 @@ public abstract class StaticManager {
 	public static int FONT_TEXTURE_UNIFORM_ID = 1337;
 	public static int FONT_SCALING_MATRIX_UNIFORM_ID = 1337;
 	public static int TEXT_POSITION_UNIFORM_ID = 1337;
+	public static int CREDITS_PROGRAM_ID = 1337;
 
 }
