@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -15,17 +16,24 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
+import cdg.swi.game.menu.CreditsScreen;
 import cdg.swi.game.menu.MainMenu;
+import cdg.swi.game.menu.MenuFrame;
 import cdg.swi.game.util.StaticManager;
 import cdg.swi.game.util.Utility;
 import cdg.swi.game.util.VertexData;
+import cdg.swi.game.util.interfaces.IGameControl;
 
-public class Main {
+public class Main implements IGameControl{
 
 	private MainMenu m;
 	private cdg.swi.game.test.SimpleDrawable d;
 	private cdg.swi.game.test.SimpleDrawable d2;
-	private Calendar c;
+	private long lastFrame;
+	private double delta;
+	private boolean showCredits = false;
+	private MenuFrame activeMenu;
+	CreditsScreen cs;
 	/**
 	 * @param args
 	 */
@@ -36,21 +44,25 @@ public class Main {
 	
 	public Main()
 	{
+		
 		this.initWindow();
 		this.initGL();
 		this.loadMenuSelectionShader();
 		this.loadMenuRenderShader();
 		this.loadTextShader();
+		this.loadCreditsShader();
 		
 		StaticManager.FONT_TEXTURE_ID = Utility.loadPNGTexture("res//font//font.png", GL13.GL_TEXTURE0);
 		//setupQuad();
-		m = new MainMenu();
-		c = Calendar.getInstance();
+		this.m = new MainMenu(this);
+		this.activeMenu = m;
+
+		this.lastFrame = getTime();
 		while (!Display.isCloseRequested()) {
-			long lastFrameTime = Calendar.getInstance().getTimeInMillis()-c.getTimeInMillis();
-			c = Calendar.getInstance();
 			
-			m.setLabelText("Frametime: "+lastFrameTime+"ms"+"\nFps: "+Math.round((double)1000/(double)lastFrameTime));
+			this.delta = this.calculateDelta();
+			double lastFrameTime = getDelta();
+			m.setLabelText("Frametime: "+lastFrameTime+"ms"+"\nFps: "+Math.round((double)1000/lastFrameTime));
 			// Do a single loop (logic/render)
 			this.process();
 			
@@ -61,15 +73,23 @@ public class Main {
 		}
 	}
 	
+	private long getTime()
+{
+		return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+	}
+	
 	private void process()
 	{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		m.draw();
+		if(this.showCredits)
+			cs.draw();
+		else
+			this.activeMenu.draw();
 		
-		GL20.glUseProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
+		//GL20.glUseProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
 		//d.draw();
 		//d2.draw();
-		GL20.glUseProgram(0);
+		//GL20.glUseProgram(0);
 		
 		this.exitOnGLError("process");
 	}
@@ -84,7 +104,7 @@ public class Main {
 				.withProfileCore(true);
 			
 			Display.setDisplayMode(new DisplayMode(StaticManager.WINDOW_WIDTH, StaticManager.WINDOW_HEIGHT));
-			Display.setTitle("v0.0.1c - font shader test");
+			Display.setTitle("v0.0.1d - credits!");
 			Display.create(pixelFormat, contextAtrributes);
 			
 			
@@ -154,6 +174,28 @@ public class Main {
 		GL20.glValidateProgram(StaticManager.SELECTION_SHADER_PROGRAM_ID);
 	}
 	
+	private void loadCreditsShader()
+	{
+		//load vertex shader
+		int vsId = Utility.loadShader("res\\shader\\creditsVertex.glsl", GL20.GL_VERTEX_SHADER);
+		//load fragment shader
+		int fsId = Utility.loadShader("res\\shader\\creditsFragment.glsl", GL20.GL_FRAGMENT_SHADER);
+		
+		StaticManager.CREDITS_PROGRAM_ID = GL20.glCreateProgram();
+		GL20.glAttachShader(StaticManager.CREDITS_PROGRAM_ID, vsId);
+		GL20.glAttachShader(StaticManager.CREDITS_PROGRAM_ID, fsId);
+		GL20.glLinkProgram(StaticManager.CREDITS_PROGRAM_ID);
+
+		// Position information will be attribute 0
+		GL20.glBindAttribLocation(StaticManager.CREDITS_PROGRAM_ID, 0, "in_Position");
+		// Color information will be attribute 1
+		GL20.glBindAttribLocation(StaticManager.CREDITS_PROGRAM_ID, 1, "in_Color");
+		// Textute information will be attribute 2
+		GL20.glBindAttribLocation(StaticManager.CREDITS_PROGRAM_ID, 2, "in_TextureCoord");
+		
+		GL20.glValidateProgram(StaticManager.CREDITS_PROGRAM_ID);
+	}
+	
 	private void loadMenuRenderShader()
 	{
 		//load vertex shader
@@ -216,6 +258,39 @@ public class Main {
 			if (Display.isCreated()) Display.destroy();
 			System.exit(-1);
 		}
+	}
+	
+	public double calculateDelta() 
+	{
+		long currentTime = getTime();
+		double delta = (double) currentTime - (double) lastFrame;
+		this.lastFrame = getTime();
+		return delta;
+	}
+
+	@Override
+	public double getDelta() 
+	{
+		return this.delta;
+	}
+
+	@Override
+	public void showMainMenu() 
+	{		
+		GL11.glClearColor(StaticManager.CLEAR_COLOR[0], 
+				  StaticManager.CLEAR_COLOR[1],
+				  StaticManager.CLEAR_COLOR[2], 
+				  StaticManager.CLEAR_COLOR[3]);
+		this.showCredits = false;
+		this.activeMenu = this.m;
+	}
+
+	@Override
+	public void showCredits() 
+	{
+		
+		this.showCredits = true;	
+		this.cs = new CreditsScreen(this);
 	}
 
 }
