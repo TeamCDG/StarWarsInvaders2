@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL20;
 
 import cdg.swi.game.util.StaticManager;
 import cdg.swi.game.util.interfaces.IClickListener;
+import cdg.swi.game.util.interfaces.IGameControl;
 import cdg.swi.game.util.interfaces.IMenuObject;
 import cdg.swi.game.util.interfaces.ISelectListener;
 
@@ -18,9 +19,11 @@ public abstract class MenuFrame {
 
 	private List<Component> components;
 	private int lastSelectedId;
+	private IGameControl control;
 	
-	public MenuFrame()
+	public MenuFrame(IGameControl control)
 	{
+		this.control = control;
 		this.components = new ArrayList<Component>();
 	}
 	
@@ -161,4 +164,10 @@ public abstract class MenuFrame {
 		}
 	}
 
+	/**
+	 * @return the control
+	 */
+	public IGameControl getControl() {
+		return control;
+	}
 }
