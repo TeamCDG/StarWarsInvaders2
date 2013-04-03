@@ -1,0 +1,47 @@
+       CDG StarwarsInvaders 2
+
+            cdg.bplaced.net
+
+
+It is a dark time for the People at
+
+CDG. Although they had vaccations, it
+
+was very boring. One of them, Master 
+
+Lars, had the idea of creating a game. 
+
+First it was a little project for
+
+school, but he soon discovered, that his
+
+coding skills were not good enough. So
+
+he decided to get some help with this
+
+and asked his friend Josh, who was very
+
+interested in the idea. So they decided
+
+to split work into the following:
+ 
+
+Lars: Sprites, Design & Sounds
+
+Josh:  Programming
+
+
+
+        Special Thanks
+
+
+Caro:  Helping Josh keep on working
+
+       Feedback
+
+Max:   Testing & Feedback
+
+Mazzl: Feedback 
+
+
+May the force be with you, player...
