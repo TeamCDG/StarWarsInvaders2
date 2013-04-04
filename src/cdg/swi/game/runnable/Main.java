@@ -3,8 +3,10 @@ package cdg.swi.game.runnable;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.Calendar;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
@@ -19,6 +21,7 @@ import org.lwjgl.util.glu.GLU;
 import cdg.swi.game.menu.CreditsScreen;
 import cdg.swi.game.menu.MainMenu;
 import cdg.swi.game.menu.MenuFrame;
+import cdg.swi.game.menu.SplashScreen;
 import cdg.swi.game.util.StaticManager;
 import cdg.swi.game.util.Utility;
 import cdg.swi.game.util.VertexData;
@@ -32,7 +35,9 @@ public class Main implements IGameControl{
 	private long lastFrame;
 	private double delta;
 	private boolean showCredits = false;
+	private boolean showSplash = true;
 	private MenuFrame activeMenu;
+	private SplashScreen splash;
 	CreditsScreen cs;
 	/**
 	 * @param args
@@ -53,8 +58,10 @@ public class Main implements IGameControl{
 		this.loadCreditsShader();
 		
 		StaticManager.FONT_TEXTURE_ID = Utility.loadPNGTexture("res//font//font.png", GL13.GL_TEXTURE0);
+		StaticManager.SPLASH_TEXTURE_ID = Utility.loadPNGTexture("res//textures//logo.png", GL13.GL_TEXTURE0);
 		//setupQuad();
 		this.m = new MainMenu(this);
+		this.splash = new SplashScreen(this);
 		this.activeMenu = m;
 
 		this.lastFrame = getTime();
@@ -83,6 +90,8 @@ public class Main implements IGameControl{
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		if(this.showCredits)
 			cs.draw();
+		else if(this.showSplash)
+			this.splash.draw();
 		else
 			this.activeMenu.draw();
 		
@@ -104,7 +113,7 @@ public class Main implements IGameControl{
 				.withProfileCore(true);
 			
 			Display.setDisplayMode(new DisplayMode(StaticManager.WINDOW_WIDTH, StaticManager.WINDOW_HEIGHT));
-			Display.setTitle("v0.0.1d - credits!");
+			Display.setTitle("v0.0.1e - splash! 720p Edition");
 			Display.create(pixelFormat, contextAtrributes);
 			
 			
@@ -245,6 +254,13 @@ public class Main implements IGameControl{
 		StaticManager.FONT_TEXTURE_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "texture_font");
 		StaticManager.FONT_SCALING_MATRIX_UNIFORM_ID= GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "font_scaling_matrix");
 		StaticManager.TEXT_POSITION_UNIFORM_ID = GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "position");
+		
+		GL20.glUseProgram(StaticManager.TEXT_SHADER_PROGRAM_ID);
+		FloatBuffer mat = BufferUtils.createFloatBuffer(16);
+		mat.put(StaticManager.WINDOW_MATRIX.toArray());
+		mat.flip();
+		GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.TEXT_SHADER_PROGRAM_ID, "windowMatrix"), false, mat);
+		GL20.glUseProgram(0);
 	}
 	
 	private void exitOnGLError(String errorMessage) 
@@ -282,6 +298,7 @@ public class Main implements IGameControl{
 				  StaticManager.CLEAR_COLOR[2], 
 				  StaticManager.CLEAR_COLOR[3]);
 		this.showCredits = false;
+		this.showSplash = false;
 		this.activeMenu = this.m;
 	}
 
