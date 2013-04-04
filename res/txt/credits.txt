@@ -1,4 +1,4 @@
-       CDG StarwarsInvaders 2
+          CDG Space Empires
 
             cdg.bplaced.net
 
@@ -42,6 +42,8 @@ Caro:  Helping Josh keep on working
 Max:   Testing & Feedback
 
 Mazzl: Feedback 
+
+Frank: Feedback
 
 
 May the force be with you, player...
