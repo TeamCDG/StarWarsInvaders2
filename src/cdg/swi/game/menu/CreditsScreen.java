@@ -72,7 +72,6 @@ public class CreditsScreen {
 	    {//Catch exception if any
 			  System.err.println("Error: " + e.getMessage());
 		}
-		System.out.println(credits);
 		this.setupGL(0);
 	}
 	
@@ -257,14 +256,14 @@ public class CreditsScreen {
 				mat.put(this.textScalingMatrix.toArray());
 				mat.flip();
 				
-				FloatBuffer trmat = BufferUtils.createFloatBuffer(16);
-				trmat.put(this.textTranslationMatrix.toArray());
-				trmat.flip();
+				FloatBuffer wmat = BufferUtils.createFloatBuffer(16);
+				wmat.put(StaticManager.WINDOW_MATRIX.toArray());
+				wmat.flip();
 				
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "texture_font"), 0);
 				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "font_scaling_matrix"), false, mat);
 				GL20.glUniform2f(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID,"position"), (textScalingMatrix.multiply(max).getX()/2)*-1, textScalingMatrix.multiply(max).getY()/2);		
-				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "translation_matrix"), false, trmat);
+				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "windowMatrix"), false, wmat);
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "state"), state);
 				
 				
@@ -305,14 +304,14 @@ public class CreditsScreen {
 				mat.put(this.textScalingMatrix.toArray());
 				mat.flip();
 				
-				FloatBuffer trmat = BufferUtils.createFloatBuffer(16);
-				trmat.put(this.textTranslationMatrix.toArray());
-				trmat.flip();
+				FloatBuffer wmat = BufferUtils.createFloatBuffer(16);
+				wmat.put(StaticManager.WINDOW_MATRIX.toArray());
+				wmat.flip();
 				
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "texture_font"), 0);
 				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "font_scaling_matrix"), false, mat);
 				GL20.glUniform2f(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID,"position"), (textScalingMatrix.multiply(max).getX()/2)*-1, textScalingMatrix.multiply(max).getY()/2);		
-				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "translation_matrix"), false, trmat);
+				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "windowMatrix"), false, wmat);
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "state"), state);
 				
 				
@@ -353,14 +352,14 @@ public class CreditsScreen {
 				mat.put(this.textScalingMatrix.toArray());
 				mat.flip();
 				
-				FloatBuffer trmat = BufferUtils.createFloatBuffer(16);
-				trmat.put(this.textTranslationMatrix.toArray());
-				trmat.flip();
+				FloatBuffer wmat = BufferUtils.createFloatBuffer(16);
+				wmat.put(StaticManager.WINDOW_MATRIX.toArray());
+				wmat.flip();
 				
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "texture_font"), 0);
 				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "font_scaling_matrix"), false, mat);
 				GL20.glUniform2f(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID,"position"), -1.0f, 2.0f);		
-				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "translation_matrix"), false, trmat);
+				GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "windowMatrix"), false, wmat);	
 				GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "state"), state);
 				GL20.glUniform1f(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "time"), time);
 				GL20.glUniform1f(GL20.glGetUniformLocation(StaticManager.CREDITS_PROGRAM_ID, "maxy"), textScalingMatrix.multiply(max).getY());
@@ -377,7 +376,7 @@ public class CreditsScreen {
 				// Draw the vertices
 				GL11.glDrawElements(GL11.GL_TRIANGLES, this.credits.length()*3*2, GL11.GL_UNSIGNED_INT, 0);
 			
-				if(time <= -230)
+				if(time <= -260)
 				{
 					c.showMainMenu();
 				}
