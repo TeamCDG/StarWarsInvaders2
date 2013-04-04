@@ -5,7 +5,7 @@ in vec4 in_Color;
 in vec2 in_TextureCoord;
 
 uniform mat4 font_scaling_matrix;
-uniform mat4 translation_matrix;
+uniform mat4 windowMatrix;
 uniform vec2 position;
 uniform int state;
 uniform float time;
@@ -21,7 +21,7 @@ void main(void) {
 	if(state == 0 || state == 1)
 	{
 		vec4 newVertex = vec4(scaledVertex.x + position.x, scaledVertex.y + position.y, scaledVertex.z, scaledVertex.w);
-		gl_Position = newVertex;
+		gl_Position = windowMatrix * newVertex;
 	}
 	else
 	{
@@ -42,7 +42,7 @@ void main(void) {
 		float newx = (scaledVertex.x+position.x)*0.5 / mapf;
 		
 		vec4 newVertex = vec4(newx, newy, scaledVertex.z, scaledVertex.w);
-		gl_Position = newVertex;
+		gl_Position = windowMatrix * newVertex;
 	}
 	
 	pass_Color = endColor;
