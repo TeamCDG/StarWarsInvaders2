@@ -161,4 +161,9 @@ public abstract class Utility
 		System.out.print("\n");
 		System.out.flush();
 	}
+	
+	public static float degToRad(float deg)
+	{
+		return deg*((float)Math.PI/180.0f);
+	}
 }
