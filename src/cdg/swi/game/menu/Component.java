@@ -319,6 +319,8 @@ public abstract class Component {
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, StaticManager.FONT_TEXTURE_ID);
+			
 			GL20.glUseProgram(StaticManager.TEXT_SHADER_PROGRAM_ID);
 			GL30.glBindVertexArray(this.textVAO);
 			
