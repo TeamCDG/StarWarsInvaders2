@@ -41,16 +41,19 @@ public abstract class Component {
 	private String text = "";
 	private float textXOffset = 0.0f;
 	private float textYOffset = 0.0f;
-	protected Matrix4x4 textScalingMatrix = new Matrix4x4(0.5f, 0.0f, 0.0f, 0.0f,
-														  0.0f, 0.5f, 0.0f, 0.0f,
-														  0.0f, 0.0f, 0.5f, 0.0f,
+	protected Matrix4x4 textScalingMatrix = new Matrix4x4(0.5f*StaticManager.ASPECT_RATIO, 0.0f, 0.0f, 0.0f,
+														  0.0f, 0.5f*StaticManager.ASPECT_RATIO, 0.0f, 0.0f,
+														  0.0f, 0.0f, 0.5f*StaticManager.ASPECT_RATIO, 0.0f,
 														  0.0f, 0.0f, 0.0f, 1.0f);
 	private float[] textColor = new float[]{1.0f,1.0f,1.0f};
 	private VertexData[] textPoints;
+	private Vertex2 textSize;
+	private boolean autoSetupTextPosition = true;
 	
 	private int selectionVAO = -1;
 	private int selectionVBO = -1;
 	private int selectionIndiciesVBO = -1;
+	private boolean selectable = true;
 	
 	protected int drawVAO = -1;
 	protected int drawVBO = -1;
@@ -302,7 +305,9 @@ public abstract class Component {
 			GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0); //unbind buffer		
 			GL30.glBindVertexArray(0); //unbind VAO
 			
-			Vertex4 textEdge = (Vertex4) this.textScalingMatrix.multiply(new Vertex2(xoffmax, yoff+FontFinals.getHeight('A')));
+			
+			Vertex4 textEdge = (Vertex4) StaticManager.WINDOW_MATRIX.multiply(this.textScalingMatrix.multiply(new Vertex2(xoffmax, yoff+FontFinals.getHeight('A'))));
+			this.textSize = new Vertex2(textEdge.getX(), textEdge.getY());
 			if(textEdge.getY()+this.textYOffset > this.height)
 				this.setHeight(textEdge.getY()+this.textYOffset);
 			if(textEdge.getX()+this.textXOffset > this.width)
@@ -329,7 +334,12 @@ public abstract class Component {
 			mat.flip();
 			
 			GL20.glUniform1i(StaticManager.FONT_TEXTURE_UNIFORM_ID, 0);
-			GL20.glUniformMatrix4(StaticManager.FONT_SCALING_MATRIX_UNIFORM_ID, false, mat);		
+			GL20.glUniformMatrix4(StaticManager.FONT_SCALING_MATRIX_UNIFORM_ID, false, mat);
+			if(this.autoSetupTextPosition)
+			{				
+				this.textXOffset = (this.width-this.textSize.getX()) / 2.0f;
+				this.textYOffset = (this.height-this.textSize.getY()) / 2.0f;
+			}
 			GL20.glUniform2f(StaticManager.TEXT_POSITION_UNIFORM_ID, this.x+this.textXOffset, this.y-this.textYOffset);		
 			
 			
@@ -345,12 +355,14 @@ public abstract class Component {
 			GL11.glDrawElements(GL11.GL_TRIANGLES, this.text.length()*3*2, GL11.GL_UNSIGNED_INT, 0);
 			
 			// Put everything back to default (deselect)
+			
 			GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 			GL20.glDisableVertexAttribArray(0);
 			GL20.glDisableVertexAttribArray(1);
 			GL20.glDisableVertexAttribArray(2);
 			GL30.glBindVertexArray(0);
 			GL20.glUseProgram(0);
+			
 		
 		}
 		
@@ -432,11 +444,13 @@ public abstract class Component {
 		GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_BYTE, 0);
 		
 		// Put everything back to default (deselect)
+		
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
+		
 	}
 
 	public List<IClickListener> getClickListener()
@@ -467,6 +481,43 @@ public abstract class Component {
 	public void removeSelectListener(ISelectListener listener)
 	{
 		this.selectListener.remove(listener);
+	}
+	
+	public void setTextSize(float size)
+	{
+		textScalingMatrix = new Matrix4x4(size, 0.0f, 0.0f, 0.0f,
+										  0.0f, size, 0.0f, 0.0f,
+										  0.0f, 0.0f, size, 0.0f,
+										  0.0f, 0.0f, 0.0f, 1.0f);
+		this.setupGLText();
+	}
+
+	/**
+	 * @return the autoSetupTextPosition
+	 */
+	public boolean isAutoSetupTextPosition() {
+		return autoSetupTextPosition;
+	}
+
+	/**
+	 * @param autoSetupTextPosition the autoSetupTextPosition to set
+	 */
+	public void setAutoSetupTextPosition(boolean autoSetupTextPosition) {
+		this.autoSetupTextPosition = autoSetupTextPosition;
+	}
+
+	/**
+	 * @return the selectable
+	 */
+	public boolean isSelectable() {
+		return selectable;
+	}
+
+	/**
+	 * @param selectable the selectable to set
+	 */
+	public void setSelectable(boolean selectable) {
+		this.selectable = selectable;
 	}
 
 }
