@@ -10,6 +10,9 @@ in vec2 pass_TextureCoord;
 
 out vec4 out_Color;
 
+#define BUTTON_BORDER_V 10
+#define BUTTON_BORDER_H 11
+
 void main(void) {
 
 	vec4 color = pass_Color*texture2D(texture_font,pass_TextureCoord);
@@ -21,6 +24,10 @@ void main(void) {
 		if(time >= 600)
 			alpha = (1.0/400)*((time-1000.0)*-1);
 		color = vec4(color.x, color.y, color.z, alpha);
+	}
+	else if(state == -1 || state == BUTTON_BORDER_V || state == BUTTON_BORDER_H)
+	{
+		color = pass_Color;
 	}
 	out_Color = color;
 }
