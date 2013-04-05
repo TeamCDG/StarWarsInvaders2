@@ -22,11 +22,12 @@ import cdg.swi.game.util.VertexData;
 
 public class Label extends Component {
 
-	private VertexData[] textPoints;
 	
 	public Label(float x, float y, String text) 
 	{
 		super(x, y);
+		this.setSelectable(false);
+		this.setAutoSetupTextPosition(false);
 		this.setText(text);
 		this.setupGL();
 	}
