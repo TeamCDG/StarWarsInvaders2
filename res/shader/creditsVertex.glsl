@@ -28,7 +28,7 @@ void main(void) {
 		float yadd = -0.003475 * time + 0.7;
 		float newy = scaledVertex.y + position.y + yadd;
 		if(newy > 0.6 && newy < 0.75)
-			endColor = vec4(in_Color.x, in_Color.y, in_Color.z, (1.0/0.15)*((newy-0.75)*-1));
+			endColor = vec4(in_Color.x, in_Color.y, in_Color.z, (0.8/0.15)*((newy-0.75)*-1));
 		else if(newy > 0.75)
 			endColor = vec4(in_Color.x, in_Color.y, in_Color.z, 0.0);
 			
