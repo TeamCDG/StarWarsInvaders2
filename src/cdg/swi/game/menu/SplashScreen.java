@@ -130,7 +130,8 @@ public class SplashScreen {
 			time -= 1000.0/5000.0*delta;
 			GL11.glEnable(GL11.GL_BLEND);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-				
+			
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, StaticManager.SPLASH_TEXTURE_ID);
 			//GL20.glUseProgram(StaticManager.CREDITS_PROGRAM_ID);
 			GL20.glUseProgram(StaticManager.MENU_SHADER_PROGRAM_ID);
 			GL30.glBindVertexArray(this.drawVAO);
@@ -139,6 +140,7 @@ public class SplashScreen {
 			mat.put(StaticManager.WINDOW_MATRIX.toArray());
 			mat.flip();
 				
+			
 			GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.MENU_SHADER_PROGRAM_ID, "texture_font"), 0);
 			GL20.glUniformMatrix4(GL20.glGetUniformLocation(StaticManager.MENU_SHADER_PROGRAM_ID, "windowMatrix"), false, mat);		
 			GL20.glUniform1i(GL20.glGetUniformLocation(StaticManager.MENU_SHADER_PROGRAM_ID, "state"), 1);

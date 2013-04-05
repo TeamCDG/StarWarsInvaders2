@@ -59,6 +59,7 @@ public class Main implements IGameControl{
 		
 		StaticManager.FONT_TEXTURE_ID = Utility.loadPNGTexture("res//font//font.png", GL13.GL_TEXTURE0);
 		StaticManager.SPLASH_TEXTURE_ID = Utility.loadPNGTexture("res//textures//logo.png", GL13.GL_TEXTURE0);
+		StaticManager.MAIN_MENU_BACKGROUND_TEXTURE_ID = Utility.loadPNGTexture("res//textures//background.png", GL13.GL_TEXTURE0);
 		//setupQuad();
 		this.m = new MainMenu(this);
 		this.splash = new SplashScreen(this);
@@ -113,7 +114,7 @@ public class Main implements IGameControl{
 				.withProfileCore(true);
 			
 			Display.setDisplayMode(new DisplayMode(StaticManager.WINDOW_WIDTH, StaticManager.WINDOW_HEIGHT));
-			Display.setTitle("v0.0.1e - splash! 720p Edition");
+			Display.setTitle("v0.0.1f - Menu Editing");
 			Display.create(pixelFormat, contextAtrributes);
 			
 			

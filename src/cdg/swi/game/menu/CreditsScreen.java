@@ -372,6 +372,9 @@ public class CreditsScreen {
 				// Bind to the index VBO that has all the information about the order of the vertices
 				GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.drawIndiciesVBO);
 				
+				GL11.glEnable(GL11.GL_LINE_SMOOTH);
+				GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+				
 				
 				// Draw the vertices
 				GL11.glDrawElements(GL11.GL_TRIANGLES, this.credits.length()*3*2, GL11.GL_UNSIGNED_INT, 0);
