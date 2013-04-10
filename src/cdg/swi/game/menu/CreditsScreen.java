@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -180,6 +181,12 @@ public class CreditsScreen {
 	
 	public void draw()
 	{
+		if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+		{
+			this.c.showMainMenu();
+			return;
+		}
+		
 		double delta = this.c.getDelta();
 		GL11.glClearColor(0.0f, 
 		  		  0.0f,
