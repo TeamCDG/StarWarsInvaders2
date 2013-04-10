@@ -96,13 +96,14 @@ public abstract class MenuFrame {
 	
 	public void draw()
 	{
-		//frame+=control.getDelta();
-		if(frame >= 30)
+		if(Mouse.getDX() != 0 || Mouse.getDY() != 0)
+			frame+=control.getDelta();
+		
+		if(frame >= 30 || Mouse.isButtonDown(0))
 		{
 			this.doSelection(true,true);
 			frame = 0;
 		}
-		this.doSelection(true,true);
 		
 		if(this.drawBackground )
 		{
