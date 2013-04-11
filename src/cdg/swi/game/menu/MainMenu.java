@@ -66,6 +66,12 @@ public class MainMenu extends MenuFrame
 			{
 				getControl().showCredits();
 			}
+
+			@Override
+			public void unclicked() {
+				// TODO Auto-generated method stub
+				
+			}
 		});
 		this.add(this.credits);
 		
@@ -78,13 +84,22 @@ public class MainMenu extends MenuFrame
 			public void clicked(int x, int y, int button) 
 			{
 				System.exit(1337);
-		}});
+		}
+
+			@Override
+			public void unclicked() {
+				// TODO Auto-generated method stub
+				
+			}});
 		this.add(this.close);
 		
 		this.headLabel = new Label(-0.6f, 0.8f, "space empires");
 		this.headLabel.setTextSize(2.5f);
 		this.headLabel.setTextColor(1.0f, 1.0f, 1.0f, 0.1f);
 		this.add(this.headLabel);
+		
+		Textbox t = new Textbox(-0.5f, 0.0f);
+		this.add(t);
 		
 		this.setDrawBackground(true);
 	}
