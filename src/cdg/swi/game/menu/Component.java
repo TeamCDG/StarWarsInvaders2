@@ -26,6 +26,8 @@ import cdg.swi.game.util.Vertex2;
 import cdg.swi.game.util.Vertex4;
 import cdg.swi.game.util.VertexData;
 import cdg.swi.game.util.interfaces.IClickListener;
+import cdg.swi.game.util.interfaces.IFocusListener;
+import cdg.swi.game.util.interfaces.IKeyboardListener;
 import cdg.swi.game.util.interfaces.ISelectListener;
 
 public abstract class Component {
@@ -65,6 +67,8 @@ public abstract class Component {
 	
 	private List<IClickListener> clickListener = null;
 	private List<ISelectListener> selectListener = null;
+	private List<IFocusListener> focusListener = null;
+	private List<IKeyboardListener> keyboardListener = null;
 	
 	public Component(float x, float y)
 	{
@@ -73,6 +77,8 @@ public abstract class Component {
 		//this.setupSelectionGL();
 		this.clickListener = new ArrayList<IClickListener>();
 		this.selectListener = new ArrayList<ISelectListener>();
+		this.focusListener = new ArrayList<IFocusListener>();
+		this.keyboardListener = new ArrayList<IKeyboardListener>();
 	}
 	
 	public int getSelectionVAO()
@@ -520,4 +526,34 @@ public abstract class Component {
 		this.selectable = selectable;
 	}
 
+	public List<IFocusListener> getFocusListener()
+	{
+		return this.focusListener;
+	}
+	
+	public void addfocusListener(IFocusListener listener)
+	{
+		this.focusListener.add(listener);
+	}
+	
+	public void removeFocusListener(IFocusListener listener)
+	{
+		this.focusListener.remove(listener);
+	}
+	
+	public List<IKeyboardListener> getKeyboardListener()
+	{
+		return this.keyboardListener;
+	}
+	
+	public void addKeyboardListener(IKeyboardListener listener)
+	{
+		this.keyboardListener.add(listener);
+	}
+	
+	public void removeKeyboardListener(IKeyboardListener listener)
+	{
+		this.keyboardListener.remove(listener);
+	}
+	
 }
