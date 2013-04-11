@@ -14,6 +14,7 @@ import cdg.swi.game.util.Utility;
 import cdg.swi.game.util.VertexData;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -22,7 +23,9 @@ import org.lwjgl.opengl.GL30;
 
 import cdg.swi.game.util.StaticManager;
 import cdg.swi.game.util.interfaces.IClickListener;
+import cdg.swi.game.util.interfaces.IFocusListener;
 import cdg.swi.game.util.interfaces.IGameControl;
+import cdg.swi.game.util.interfaces.IKeyboardListener;
 import cdg.swi.game.util.interfaces.IMenuObject;
 import cdg.swi.game.util.interfaces.ISelectListener;
 
@@ -30,7 +33,11 @@ public abstract class MenuFrame {
 
 	private List<Component> components;
 	private int lastSelectedId;
+	private int focusedId = -1;
 	private IGameControl control;
+	
+	private int lastKey = -1;
+	private boolean jumped = false;
 	
 	private int backgroundVAO = -1;
 	private int backgroundVBO = -1;
@@ -103,6 +110,25 @@ public abstract class MenuFrame {
 		{
 			this.doSelection(true,true);
 			frame = 0;
+		}
+		
+		Keyboard.poll();
+		Keyboard.enableRepeatEvents(true);		
+		
+		while(Keyboard.next())
+		{
+			System.out.println(Keyboard.getEventKey()+"/"+lastKey+"/"+(lastKey == Keyboard.getEventKey()));
+			
+			if(this.focusedId != -1 && Keyboard.getEventKeyState())
+			{
+				List<IKeyboardListener> l = this.getComponentById(this.focusedId).getKeyboardListener();
+				for(int i = 0; i < l.size(); i++)
+				{
+					l.get(i).keyDown(Keyboard.getEventKey(), Keyboard.getEventCharacter());
+				}
+			}
+			
+			lastKey = Keyboard.getEventKey();
 		}
 		
 		if(this.drawBackground )
@@ -194,14 +220,32 @@ public abstract class MenuFrame {
 		
 		if(Mouse.isButtonDown(0))
 		{
+			
 			Component c = this.getComponentById(gotId);
 			if(c != null)
 			{
+				if(gotId != this.focusedId && this.focusedId != -1)
+				{
+					List<IFocusListener> l = this.getComponentById(this.focusedId).getFocusListener();
+					for(int i = 0; i < l.size(); i++)
+					{
+						l.get(i).unfocused();
+					}
+				}
+				
 				List<IClickListener> l = this.getComponentById(gotId).getClickListener();
 				for(int i = 0; i < l.size(); i++)
 				{
 					l.get(i).clicked(Mouse.getX(),Mouse.getY(),0);
 				}
+				
+				List<IFocusListener> fl = this.getComponentById(gotId).getFocusListener();
+				for(int i = 0; i < fl.size(); i++)
+				{
+					fl.get(i).focused();
+				}
+				
+				this.focusedId = gotId;
 			}
 		}
 		else if(gotId != this.lastSelectedId)
